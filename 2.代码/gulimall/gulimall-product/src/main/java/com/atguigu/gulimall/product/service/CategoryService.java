@@ -23,5 +23,8 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     //1.检查当前删除菜单，是否被别的地方引用
     void removeMenuByIds(List<Long> asList);
+
+    //根据catId，查询CatelogPath完整路径
+    Long[] findCatelogPath(Long catelogId);
 }
 

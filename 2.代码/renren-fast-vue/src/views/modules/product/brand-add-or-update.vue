@@ -21,8 +21,8 @@
             v-model="dataForm.showStatus"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
           >
           </el-switch>
     </el-form-item>
@@ -30,7 +30,7 @@
       <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
     </el-form-item>
     <el-form-item label="排序" prop="sort">
-      <el-input v-model="dataForm.sort" placeholder="排序"></el-input>
+      <el-input v-model.number="dataForm.sort" placeholder="排序"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -53,9 +53,9 @@ import singleUpload from '@/components/upload/singleUpload.vue'
           name: '',
           logo: '',
           descript: '',
-          showStatus: '',
+          showStatus: 1,
           firstLetter: '',
-          sort: ''
+          sort: 0
         },
         dataRule: {
           name: [
@@ -70,11 +70,33 @@ import singleUpload from '@/components/upload/singleUpload.vue'
           showStatus: [
             { required: true, message: '显示状态[0-不显示；1-显示]不能为空', trigger: 'blur' }
           ],
+          //过滤器：自定义校验
           firstLetter: [
-            { required: true, message: '检索首字母不能为空', trigger: 'blur' }
+            { validator: (rule, value, callback) =>{
+              if(value ===  ''){
+                callback(new Error("首字母必须填写"));
+              }
+              else if( !/^[a-zA-Z]$/.test(value)){
+                callback(new Error("首字母必须是a-z A-Z之间"));
+              }
+              else{
+                callback();
+              }
+            }, trigger: 'blur' }
           ],
+          //排序校验
           sort: [
-            { required: true, message: '排序不能为空', trigger: 'blur' }
+            { validator: (rule, value, callback) =>{
+              if(value ===  ''){
+                callback(new Error("排序字段必须填写"));
+              }
+              else if( !Number.isInteger(value) || value < 0){
+                callback(new Error("排序必须是大于等于0的数"));
+              }
+              else{
+                callback();
+              }
+            }, trigger: 'blur' }
           ]
         }
       }

@@ -57,12 +57,16 @@
         label="品牌名"
       >
       </el-table-column>
+      <!-- 品牌logo地址 -->
       <el-table-column
         prop="logo"
         header-align="center"
         align="center"
         label="品牌logo地址"
       >
+        <template slot-scope="scope">
+          <img :src="scope.row.logo" style="width: 100px; height: 80px">
+        </template>
       </el-table-column>
       <el-table-column
         prop="descript"
@@ -180,7 +184,7 @@ export default {
 
       //2.向后端发送请求
       this.$http({
-        url: this.$http.adornUrl("/product/brand/update"),
+        url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
         data: this.$http.adornData({ brandId, showStatus }, false),
       }).then(({ data }) => {
