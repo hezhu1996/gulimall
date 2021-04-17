@@ -77,6 +77,15 @@ public class CategoryController {
         return R.ok();
     }
 
+    @RequestMapping("/update")
+    //@RequiresPermissions("product:category:update")
+    public R update(@RequestBody CategoryEntity category){
+        //1.因为有categoryRelation的冗余存储，不能光改品牌表，所有冗余存储都要更新
+        categoryService.updateCascade(category);
+
+        return R.ok();
+    }
+
     /**
      * 删除
      * @RequestBody:获取请求体，必须发送post

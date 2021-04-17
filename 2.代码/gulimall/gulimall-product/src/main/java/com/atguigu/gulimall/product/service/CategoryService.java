@@ -26,5 +26,8 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     //根据catId，查询CatelogPath完整路径
     Long[] findCatelogPath(Long catelogId);
+
+    //1.因为有categoryRelation的冗余存储，不能光改品牌表，所有冗余存储都要更新
+    void updateCascade(CategoryEntity category);
 }
 

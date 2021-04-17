@@ -1,5 +1,7 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +19,14 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.product.dao.CategoryDao;
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -102,6 +108,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             paths.add(parentCid);
             category = this.getById(parentCid);
         }
+    }
+
+    //1.因为有categoryRelation的冗余存储，不能光改品牌表，所有冗余存储都要更新
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        //1.更新当前"分类表"中的数据'
+        baseMapper.updateById(category);
+        //2.更新其他存有"分类名的表"
+        //2.1 更新 分类关联 表
+        categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+
     }
 
 }

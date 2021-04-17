@@ -16,5 +16,8 @@ import java.util.Map;
 public interface BrandService extends IService<BrandEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    //1.因为有categoryRelation的冗余存储，不能光改品牌表，所有荣誉存储都要更新
+    void updateDetail(BrandEntity brand);
 }
 
