@@ -20,5 +20,11 @@ public interface ProductAttrValueService extends IService<ProductAttrValueEntity
 
     //保存spu的规格参数;pms_product_attr_value
     void saveProductAttr(List<ProductAttrValueEntity> valueEntities);
+
+    //22、获取spu规格
+    List<ProductAttrValueEntity> baseAttrlistforspu(Long spuId);
+
+    // 23、修改商品规格
+    void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> entities);
 }
 

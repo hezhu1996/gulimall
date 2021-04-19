@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.gulimall.ware.entity.PurchaseDetailEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +16,10 @@ import java.util.Map;
  */
 public interface PurchaseDetailService extends IService<PurchaseDetailEntity> {
 
+    //03、查询采购需求
     PageUtils queryPage(Map<String, Object> params);
+
+    // 得到所有需要更新状态的 采购需求
+    List<PurchaseDetailEntity> listDetailByPurchaseId(Long id);
 }
 

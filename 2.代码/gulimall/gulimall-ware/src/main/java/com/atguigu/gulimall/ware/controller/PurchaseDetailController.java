@@ -35,7 +35,7 @@ public class PurchaseDetailController {
      * 列表
      */
     @RequestMapping("/list")
-    //@RequiresPermissions("ware:purchasedetail:list")
+    //03、查询采购需求
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = purchaseDetailService.queryPage(params);
 

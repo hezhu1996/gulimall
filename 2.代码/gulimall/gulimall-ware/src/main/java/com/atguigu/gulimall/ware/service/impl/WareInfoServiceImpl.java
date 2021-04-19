@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 @Service("wareInfoService")
 public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity> implements WareInfoService {
 
-    //仓库检索
+    //01、仓库列表
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         /**

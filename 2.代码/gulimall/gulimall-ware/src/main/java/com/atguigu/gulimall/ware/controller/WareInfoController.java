@@ -35,7 +35,7 @@ public class WareInfoController {
      * 列表
      */
     @RequestMapping("/list")
-    //仓库检索
+    //01、仓库列表
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = wareInfoService.queryPage(params);
 
