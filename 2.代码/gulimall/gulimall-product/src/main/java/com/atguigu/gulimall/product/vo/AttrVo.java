@@ -43,4 +43,7 @@ public class AttrVo {
     private Integer showDesc;
 
     private Long attrGroupId;
+
+    //值类型：是否可以多选
+    private Integer valueType;
 }

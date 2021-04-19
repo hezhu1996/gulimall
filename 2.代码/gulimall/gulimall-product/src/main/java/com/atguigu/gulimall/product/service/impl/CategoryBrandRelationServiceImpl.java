@@ -8,7 +8,11 @@ import com.atguigu.gulimall.product.service.CategoryService;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,6 +32,10 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    CategoryBrandRelationService relationService;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -87,4 +95,43 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
     }
 
+    //14、获取分类关联的品牌
+    @Override
+    public List<BrandEntity> getBrandByCatId(Long catId) {
+        //1.在管理表查出 分类-品牌 关系
+        QueryWrapper<CategoryBrandRelationEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("catelog_id", catId);
+        List<CategoryBrandRelationEntity> relationEntities = relationService.list(wrapper);
+
+        //2.获取 品牌 信息
+        List<BrandEntity> brandEntities = relationEntities.stream().map(item -> {
+            Long brandId = item.getBrandId();
+            BrandEntity brandEntity = brandService.getById(brandId);
+            return brandEntity;
+        }).collect(Collectors.toList());
+
+        return brandEntities;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

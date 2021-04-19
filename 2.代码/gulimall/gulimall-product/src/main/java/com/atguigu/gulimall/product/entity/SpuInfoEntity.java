@@ -52,6 +52,7 @@ public class SpuInfoEntity implements Serializable {
 	/**
 	 * 
 	 */
+
 	private Date createTime;
 	/**
 	 * 

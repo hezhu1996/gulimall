@@ -38,5 +38,8 @@ public interface AttrService extends IService<AttrEntity> {
 
     //12、删除属性与分组的关联关系
     void deleteRelation(AttrGroupRelationVo[] vos);
+
+    //13、查询：获取"分组"没有关联的其他属性
+    PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId);
 }
 

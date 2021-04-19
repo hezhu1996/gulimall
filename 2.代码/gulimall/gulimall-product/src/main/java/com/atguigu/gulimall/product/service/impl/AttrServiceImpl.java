@@ -236,7 +236,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }
     }
 
-    //10、获取属性分组的关联的所有属性; 根据分组id，查询关联的所有基本属性
+    //10、获取分组关联的所有属性; 根据分组id，查询关联的所有基本属性
     //attr_group_id -> attr_id
     @Override
     public List<AttrEntity> getRelationAttr(Long attrgroupId) {
@@ -276,6 +276,60 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         //3.返回RelationEntity实体类，编写sql语句删除对应AttrAttrgroupRelationEntity的信息
         relationDao.deleteBatchRelation(entities);
+    }
+
+    //13、查询：获取"分组"没有关联的其他属性
+    // attr_group_id -> catelog_id -> attr_group_ids -> attr_id -> attr_ids
+    @Override
+    public PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId) {
+        //1.只能关联"当前分类"中的属性
+        // attr_group_id -> catelog_id
+        AttrGroupEntity attrGroupEntity = attrGroupService.getById(attrgroupId);
+        Long catelogId = attrGroupEntity.getCatelogId();
+
+        //2.当前分组只能关联别的分组没有引用的属性
+        //2.1 当前 分类(catelog_id) 下的 其他分组(attr_group) -> catelog_id相同的其他group
+        QueryWrapper<AttrGroupEntity> groupWrapper = new QueryWrapper<>();
+        groupWrapper.eq("catelog_id", catelogId);
+        List<AttrGroupEntity> group = attrGroupService.list(groupWrapper);
+        //得到这些group的id
+        List<Long> gourpIds = group.stream().map(item -> {
+            return item.getAttrGroupId();
+        }).collect(Collectors.toList());
+
+        //2.2 分组(attr_group_id) -> 属性(attr_id)
+        //in: 只要 attr_group_id 在 groupIds 里面，都能查到
+        QueryWrapper<AttrAttrgroupRelationEntity> relationWrapper = new QueryWrapper<>();
+        relationWrapper.in("attr_group_id", gourpIds);
+        //找到这些attr_group_id 对应的 attr_id
+        List<AttrAttrgroupRelationEntity> groupRelationEntities = attrgroupRelationService.list(relationWrapper);
+        List<Long> attrIds = groupRelationEntities.stream().map(item -> {
+            return item.getAttrId();
+        }).collect(Collectors.toList());
+
+        //2.3 从当前分类的所有属性中移除这些属性
+        //2.3.1 attr表中：查找当前分类(catelog_id)中所有属性
+        QueryWrapper<AttrEntity> attrWrapper = new QueryWrapper<>();
+        attrWrapper.eq("catelog_id", catelogId);
+        attrWrapper.eq("attr_type", ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode());
+        //2.3.2 从当前分类所有属性中，排除已经关联的属性
+        if(attrIds != null && attrIds.size() > 0){
+            attrWrapper.notIn("attr_id", attrIds);
+        }
+
+        //2.4 模糊查询等
+        String key = (String) params.get("key");
+        if (!StringUtils.isEmpty(key)) {
+            attrWrapper.and((wrapper) -> {
+                wrapper.eq("attr_id", key).or().like("attr_name", key);
+            });
+        }
+
+        //2.5 封装page
+        IPage<AttrEntity> page = this.page(new Query<AttrEntity>().getPage(params), attrWrapper);
+        PageUtils pageUtils = new PageUtils(page);
+
+        return pageUtils;
     }
 }
 
