@@ -1,3 +1,4 @@
+ipAddr: 192.168.56.10
 spring:
   datasource:
     username: root
@@ -18,6 +19,20 @@ spring:
     name: gulimall-product
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.56.10
+    port: 6379
+  #缓存
+  cache:
+    redis:
+      time-to-live: 3600000
+      #是否缓存空值
+      cache-null-values: true
+      #redis前缀
+      use-key-prefix: true
+
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml

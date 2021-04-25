@@ -1,8 +1,12 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.atguigu.common.to.es.SkuEsModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,6 +22,9 @@ import org.springframework.util.StringUtils;
 
 @Service("skuInfoService")
 public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> implements SkuInfoService {
+
+    @Autowired
+    SkuInfoService skuInfoService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -97,4 +104,49 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
         return new PageUtils(page);
     }
+
+
+
+    //2.查出 spuid -> sku信息，品牌的名字
+    @Override
+    public List<SkuInfoEntity> getSkusBySpuId(Long spuId) {
+        QueryWrapper<SkuInfoEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("spu_id", spuId);
+        //查询到的sku
+        List<SkuInfoEntity> skuInfoEntities = this.list(wrapper);
+
+        return skuInfoEntities;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

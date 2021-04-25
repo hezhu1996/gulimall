@@ -331,6 +331,21 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         return pageUtils;
     }
+
+    //1.5.3 attrEntity -> search_type
+    @Override
+    public List<Long> selectSearchAttrIds(List<Long> attrIds) {
+        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("attr_id", attrIds);
+        wrapper.eq("search_type", 0);
+        List<AttrEntity> attrEntities = this.list(wrapper);
+        //根据attrIds，找到search type = 0 的数据
+        List<Long> attrIdsWithSearchZero = attrEntities.stream().map(attr -> {
+            return attr.getAttrId();
+        }).collect(Collectors.toList());
+
+        return attrIdsWithSearchZero;
+    }
 }
 
 

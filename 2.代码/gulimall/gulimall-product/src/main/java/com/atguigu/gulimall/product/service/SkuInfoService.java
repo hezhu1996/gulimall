@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.gulimall.product.entity.SkuInfoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,5 +23,9 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
 
     //21、sku检索
     PageUtils queryPageByCondition(Map<String, Object> params);
+
+
+    //2.查出 spuid -> sku信息，品牌的名字
+    List<SkuInfoEntity> getSkusBySpuId(Long spuId);
 }
 

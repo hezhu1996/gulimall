@@ -1,5 +1,6 @@
 package com.atguigu.gulimall.product.service;
 
+import com.atguigu.gulimall.product.vo.Catelog2Vo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.gulimall.product.entity.CategoryEntity;
@@ -29,5 +30,12 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     //1.因为有categoryRelation的冗余存储，不能光改品牌表，所有冗余存储都要更新
     void updateCascade(CategoryEntity category);
+
+    //web 1. 查出所有1级分类
+    List<CategoryEntity> getLevel1Categorys();
+
+    //web 2.得到二级、三级子分类
+    Map<String, List<Catelog2Vo>> getCatelogJson();
+
 }
 

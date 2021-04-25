@@ -1,0 +1,120 @@
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+    sender:
+      type: web
+    discovery-client-enabled: false
+  #采样取值介于 0到1之间，1则表示全部收集
+  sleuth:
+    sampler:
+      probability: 1
+  cloud:
+    gateway:
+      routes:
+        - id: baidu_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url, baidu
+        - id: qq_route
+          uri: https://www.qq.com/
+          predicates:
+            - Query=url, qq
+
+        #将路径为Path=/api/thirdparty/**转发至第三方服务模块
+        - id: third_party_route
+          uri: lb://gulimall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>/?.*),/$\{segment}
+
+        #将路径为Path=/api/product转发gulimall-product微服务
+        - id: product_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        #将路径为Path=/api/member/**转发至会员服务
+        - id: gulimall-member
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        #将路径为Path=/api/ware/**转发至仓库服务
+        - id: gulimall-ware
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        #将路径为Path=/api/coupon/**转发至优惠服务
+        - id: gulimall-coupon
+          uri: lb://gulimall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        #将路径为Path=/api/**转发至后台管理
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}
+
+        #将主机地址为search.gulimall.com转发至gulimall-search
+        - id: gulimall_serach_host
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
+
+        #将主机地址为auth.gulimall.com转发至gulimall-auth
+        - id: gulimall_auth_host
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com
+
+
+      #将主机地址为search.gulimall.com转发至gulimall-search
+        - id: gulimall_cart_host
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.gulimall.com
+
+        #将主机地址为order.gulimall.com转发至gulimall-order
+        - id: gulimall_order_host
+          uri: lb://gulimall-order
+          predicates:
+            - Host=order.gulimall.com
+
+        #将主机地址为seckill.gulimall.com转发至gulimall-seckill
+        - id: gulimall_seckill_host
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.gulimall.com
+
+        #将主机地址为**.gulimall.com转发至gulimall-product
+        - id: gulimall_host
+          uri: lb://gulimall-product
+          predicates:
+            - Host=**.gulimall.com
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+
+
+

@@ -41,5 +41,8 @@ public interface AttrService extends IService<AttrEntity> {
 
     //13、查询：获取"分组"没有关联的其他属性
     PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId);
+
+    //1.5.3 attrEntity -> search_type
+    List<Long> selectSearchAttrIds(List<Long> attrIds);
 }
 
