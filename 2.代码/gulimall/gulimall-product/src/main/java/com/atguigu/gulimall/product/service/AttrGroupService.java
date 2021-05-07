@@ -2,6 +2,7 @@ package com.atguigu.gulimall.product.service;
 
 import com.atguigu.gulimall.product.vo.AttrGroupWithAttrsVo;
 import com.atguigu.gulimall.product.vo.AttrVo;
+import com.atguigu.gulimall.product.vo.SpuItemAttrGroup;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.gulimall.product.entity.AttrGroupEntity;
@@ -24,5 +25,9 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
 
     //17、获取分类下所有分组&关联属性
     List<AttrGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogId);
+
+    //5 获取spu规格参数信息
+    //查出属性分组，以及对应的值
+    List<SpuItemAttrGroup> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId);
 }
 

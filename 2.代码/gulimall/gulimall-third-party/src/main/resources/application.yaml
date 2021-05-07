@@ -9,7 +9,13 @@ spring:
       oss:
         endpoint: oss-us-east-1.aliyuncs.com
         bucket: gulimall-hezhu
+      sms:
+        host: https://msg.market.alicloudapi.com
+        path: /msg
+        appCode: 9d6b455f62f14111bba5689186c27b1d
+
   application:
     name: gulimall-third-party
+
 server:
   port: 30000

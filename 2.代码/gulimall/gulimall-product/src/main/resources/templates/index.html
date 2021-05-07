@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>梅普尔儿商城</title>
   <link rel="stylesheet" href="/static/index/css/swiper-3.4.2.min.css">
   <link rel="stylesheet" href="/static/index/css/GL.css">
   <script src="/static/index/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
@@ -94,18 +94,23 @@
   						</div>
   					</b>
         <ul>
-          <li>
-            <a href="/static//登录页面\index.html">你好，请登录</a>
+          <li th:if="${session.loginUser} !=null">
+            <a>欢迎，[[${session.loginUser.username}]]</a>
+            <!--              <a th:href="'http://member.gulimall.com/user/' + ${session.loginUser.id}+ '.html'">你好，[[${session.loginUser.username}]]</a>-->
           </li>
-          <li>
-            <a href="/static//注册页面\index.html" class="li_2">免费注册</a>
+          <li th:if="${session.loginUser} !=null">
+            <a href="http://auth.gulimall.com/oauth2.0/logout">退出登录</a>
+          </li>
+          <li th:if="${session.loginUser} ==null">
+            <a href="http://auth.gulimall.com/login.html">你好，请登录 </a>
+          </li>
+          <li th:if="${session.loginUser} ==null">
+            <a href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
           </li>
           <span>|</span>
-          <li>
-            <a href="/static/#">我的订单</a>
+          <li th:if="${session.loginUser} !=null">
+            <a href="http://member.gulimall.com/memberOrder.html">我的订单</a>
           </li>
-
-
         </ul>
       </div>
     </div>
@@ -115,7 +120,7 @@
         <input id="searchText" type="text" placeholder="" />
         <span style="background: url(../staticindex/img/img_12.png) 0 -1px;"></span>
         <!--<button><i class="glyphicon"></i></button>-->
-        <a href="/static/#" ><img src="/static/index/img/img_09.png" onclick="search()" /></a>
+        <a href="javascript:search();" ><img src="/static/index/img/img_09.png" /></a>
       </div>
       <div class="header_ico">
         <div class="header_gw">
@@ -608,7 +613,7 @@
 <script type="text/javascript">
   function search() {
       var keyword=$("#searchText").val()
-      window.location.href="/static/http://search.gulimall.com/search.html?keyword="+keyword;
+      window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
   }
 
 </script>

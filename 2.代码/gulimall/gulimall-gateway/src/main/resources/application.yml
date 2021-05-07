@@ -42,7 +42,20 @@ spring:
         - id: gulimall_host_route
           uri: lb://gulimall-product
           predicates:
-            - Host=**.gulimall.com, gulimall.com
+            - Host=gulimall.com, item.gulimall.com
+
+        # gulimall-search
+        - id: gulimall_search_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
+
+        # gulimall-search
+        - id: gulimall_auth_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com
+
 
 
 ##  前端项目，默认都带api

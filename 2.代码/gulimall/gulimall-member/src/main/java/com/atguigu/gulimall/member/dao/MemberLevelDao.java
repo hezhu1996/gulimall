@@ -3,6 +3,7 @@ package com.atguigu.gulimall.member.dao;
 import com.atguigu.gulimall.member.entity.MemberLevelEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 /**
  * 会员等级
@@ -12,6 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2021-04-02 21:01:34
  */
 @Mapper
+@Component
 public interface MemberLevelDao extends BaseMapper<MemberLevelEntity> {
-	
+
+    MemberLevelEntity getDefaultLevel();
 }

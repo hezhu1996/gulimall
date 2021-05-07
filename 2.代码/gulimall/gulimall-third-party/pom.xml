@@ -8,15 +8,18 @@
 		<version>2.1.8.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.atguigu.guilimall</groupId>
 	<artifactId>gulimall-third-party</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gulimall-third-party</name>
 	<description>thirdparty</description>
+
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.atguigu.gulimall</groupId>
@@ -47,6 +50,12 @@
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alicloud-oss</artifactId>
+		</dependency>
+		<!--配置-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

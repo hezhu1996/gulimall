@@ -167,7 +167,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Override
     public List<CategoryEntity> getLevel1Categorys() {
         System.out.println("查找一级分类");
-        //1。一级分类 = parent_cid = 0
+        //1.一级分类 = parent_cid = 0
         QueryWrapper<CategoryEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_cid", 0);
 

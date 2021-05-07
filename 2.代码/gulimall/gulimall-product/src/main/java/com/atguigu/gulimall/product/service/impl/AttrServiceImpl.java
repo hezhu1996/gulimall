@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -156,6 +157,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     //07、查询属性详情
+    @Cacheable(value = "attr", key = "'attrinfo:' + #root.args[0]")
+    @Transactional
     @Override
     public AttrRespVo getAttrInfo(Long attrId) {
         //1.查询当前属性详细信息,并复制到AttrRespVo
@@ -335,16 +338,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     //1.5.3 attrEntity -> search_type
     @Override
     public List<Long> selectSearchAttrIds(List<Long> attrIds) {
-        QueryWrapper<AttrEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("attr_id", attrIds);
-        wrapper.eq("search_type", 0);
-        List<AttrEntity> attrEntities = this.list(wrapper);
-        //根据attrIds，找到search type = 0 的数据
-        List<Long> attrIdsWithSearchZero = attrEntities.stream().map(attr -> {
-            return attr.getAttrId();
-        }).collect(Collectors.toList());
 
-        return attrIdsWithSearchZero;
+
+        return baseMapper.selectSearchAttrIds(attrIds);
     }
 }
 
