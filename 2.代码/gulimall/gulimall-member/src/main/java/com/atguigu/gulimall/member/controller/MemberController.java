@@ -7,6 +7,8 @@ import java.util.Map;
 import com.atguigu.common.exception.BizCodeEnume;
 import com.atguigu.gulimall.member.exception.PhoneExistException;
 import com.atguigu.gulimall.member.exception.UserNameExistException;
+import com.atguigu.gulimall.member.vo.MemberLoginVo;
+import com.atguigu.gulimall.member.vo.SocialUser;
 import com.atguigu.gulimall.member.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    //认证服务，远程调用注册会员
+    //LoginController：认证服务，远程调用注册会员
     @PostMapping("/register")
     public R register(@RequestBody UserRegisterVo userRegisterVo){
 
@@ -44,6 +46,31 @@ public class MemberController {
             return R.error(BizCodeEnume.USER_EXIST_EXCEPTION.getCode(), BizCodeEnume.USER_EXIST_EXCEPTION.getMsg());
         }
         return R.ok();
+    }
+
+    //LoginController：远程调用登录服务
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo){
+        //登录
+        MemberEntity memberEntity = memberService.login(vo);
+
+        if(memberEntity != null){
+            return R.ok().setData(memberEntity);
+        }else {
+            return R.error(BizCodeEnume.LOGINACTT_PASSWORD_ERROR.getCode(), BizCodeEnume.LOGINACTT_PASSWORD_ERROR.getMsg());
+        }
+    }
+
+    //社交账户Auth2登录
+    @PostMapping("/oauth2/login")
+    public R login(@RequestBody SocialUser socialUser){
+
+        MemberEntity memberEntity = memberService.login(socialUser);
+        if(memberEntity != null){
+            return R.ok().setData(memberEntity);
+        }else {
+            return R.error(BizCodeEnume.SOCIALUSER_LOGIN_ERROR.getCode(), BizCodeEnume.SOCIALUSER_LOGIN_ERROR.getMsg());
+        }
     }
 
     /**

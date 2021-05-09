@@ -63,331 +63,335 @@
             </div>
         </b>
         <ul>
-            <li>
-                <a href="/static/search#" class="li_2">你好，请登录</a>
+            <li th:if="${session.loginUser} ==null">
+                <a href="http://auth.gulimall.com/login.html" class="li_2">你好，请登录</a>
             </li>
-            <li>
-                <a href="/static/search#">免费注册</a>
+            <li th:if="${session.loginUser} !=null">
+                <a class="li_2">欢迎，[[${session.loginUser.username}]]</a>
+            </li>
+            <li th:if="${session.loginUser} !=null">
+                <a href="http://auth.gulimall.com/oauth2.0/logout">退出登录</a>
+            </li>
+            <li th:if="${session.loginUser} ==null">
+                <a href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
             </li>
             <span>|</span>
-            <li>
-                <a href="/static/search#">我的订单</a>
+            <li th:if="${session.loginUser} !=null">
+                <a>我的订单</a>
             </li>
             <span>|</span>
             <li class="header_wdjd" style="width:80px;">
-                <a href="/static/search#">我的谷粒商城</a>
+                <a href="/list.html">我的谷粒商城</a>
                 <img src="/static/search/image/down-@1x.png"/>
-                <!--<b class="glyphicon glyphicon-menu-down"></b>-->
                 <div class="header_wdjd_txt">
                     <ul>
                         <li>
-                            <a href="/static/search#">待处理订单</a>
+                            <a href="/list.html">待处理订单</a>
                         </li>
                         <li>
-                            <a href="/static/search#">消息</a>
+                            <a href="/list.html">消息</a>
                         </li>
                         <li>
-                            <a href="/static/search#">返修退换货</a>
+                            <a href="/list.html">返修退换货</a>
                         </li>
                         <li>
-                            <a href="/static/search#">我的回答</a>
+                            <a href="/list.html">我的回答</a>
                         </li>
                         <li>
-                            <a href="/static/search#">降价商品</a>
+                            <a href="/list.html">降价商品</a>
                         </li>
                         <li>
-                            <a href="/static/search#">我的关注</a>
+                            <a href="/list.html">我的关注</a>
                         </li>
                     </ul>
                     <ul>
                         <li>
-                            <a href="/static/search#">我的京豆</a>
+                            <a href="/list.html">我的京豆</a>
                         </li>
                         <li>
-                            <a href="/static/search#">我的优惠券</a>
+                            <a href="/list.html">我的优惠券</a>
                         </li>
                         <li>
-                            <a href="/static/search#">我的白条</a>
+                            <a href="/list.html">我的白条</a>
                         </li>
                         <li>
-                            <a href="/static/search#">我的理财</a>
+                            <a href="/list.html">我的理财</a>
                         </li>
                     </ul>
                 </div>
             </li>
             <span>|</span>
             <li>
-                <a href="/static/search#">谷粒商城会员</a>
+                <a href="/list.html">谷粒商城会员</a>
             </li>
             <span>|</span>
             <li>
-                <a href="/static/search#">企业采购</a>
+                <a href="/list.html">企业采购</a>
             </li>
             <span>|</span>
             <li class="header_wdjd1">
-                <a href="/static/search#">客户服务</a>
+                <a href="/list.html">客户服务</a>
                 <img src="/static/search/image/down-@1x.png"/>
-                <!--<b class="glyphicon glyphicon-menu-down"></b>-->
                 <div class="header_wdjd_txt">
                     <ul>
                         <p style="width:100%;">客户</p>
                         <li>
-                            <a href="/static/search#">帮助中心</a>
+                            <a href="/list.html">帮助中心</a>
                         </li>
                         <li>
-                            <a href="/static/search#">售后服务</a>
+                            <a href="/list.html">售后服务</a>
                         </li>
                         <li>
-                            <a href="/static/search#">在线客服</a>
+                            <a href="/list.html">在线客服</a>
                         </li>
                         <li>
-                            <a href="/static/search#">意见建议</a>
+                            <a href="/list.html">意见建议</a>
                         </li>
                         <li>
-                            <a href="/static/search#">电话客服</a>
+                            <a href="/list.html">电话客服</a>
                         </li>
                         <li>
-                            <a href="/static/search#">客服邮箱</a>
+                            <a href="/list.html">客服邮箱</a>
                         </li>
                         <li>
-                            <a href="/static/search#">金融资讯</a>
+                            <a href="/list.html">金融资讯</a>
                         </li>
                         <li>
-                            <a href="/static/search#">售全球客服</a>
+                            <a href="/list.html">售全球客服</a>
                         </li>
                     </ul>
                     <ul>
                         <p style="width:100%;">商户</p>
                         <li>
-                            <a href="/static/search#">合作招商</a>
+                            <a href="/list.html">合作招商</a>
                         </li>
                         <li>
-                            <a href="/static/search#">学习中心</a>
+                            <a href="/list.html">学习中心</a>
                         </li>
                         <li>
-                            <a href="/static/search#">商家后台</a>
+                            <a href="/list.html">商家后台</a>
                         </li>
                         <li>
-                            <a href="/static/search#">京麦工作台</a>
+                            <a href="/list.html">京麦工作台</a>
                         </li>
                         <li>
-                            <a href="/static/search#">商家帮助</a>
+                            <a href="/list.html">商家帮助</a>
                         </li>
                         <li>
-                            <a href="/static/search#">规则平台</a>
+                            <a href="/list.html">规则平台</a>
                         </li>
                     </ul>
                 </div>
             </li>
             <span>|</span>
             <li class="header_wzdh">
-                <a href="/static/search#">网站导航</a>
+                <a href="/list.html">网站导航</a>
                 <img src="/static/search/image/down-@1x.png"/>
                 <!--<b class="glyphicon glyphicon-menu-down"></b>-->
                 <div class="header_wzdh_txt">
                     <ul style="width: 25%;">
                         <p style="width:100%;">特色主题</p>
                         <li>
-                            <a href="/static/search#">谷粒商城试用</a>
+                            <a href="/list.html">谷粒商城试用</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城金融</a>
+                            <a href="/list.html">谷粒商城金融</a>
                         </li>
                         <li>
-                            <a href="/static/search#">全球售</a>
+                            <a href="/list.html">全球售</a>
                         </li>
                         <li>
-                            <a href="/static/search#">国际站</a>
+                            <a href="/list.html">国际站</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城会员</a>
+                            <a href="/list.html">谷粒商城会员</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城预售</a>
+                            <a href="/list.html">谷粒商城预售</a>
                         </li>
                         <li>
-                            <a href="/static/search#">买什么</a>
+                            <a href="/list.html">买什么</a>
                         </li>
                         <li>
-                            <a href="/static/search#">俄语站</a>
+                            <a href="/list.html">俄语站</a>
                         </li>
                         <li>
-                            <a href="/static/search#">装机大师</a>
+                            <a href="/list.html">装机大师</a>
                         </li>
                         <li>
-                            <a href="/static/search#">0元评测</a>
+                            <a href="/list.html">0元评测</a>
                         </li>
                         <li>
-                            <a href="/static/search#">定期送</a>
+                            <a href="/list.html">定期送</a>
                         </li>
                         <li>
-                            <a href="/static/search#">港澳售</a>
+                            <a href="/list.html">港澳售</a>
                         </li>
                         <li>
-                            <a href="/static/search#">优惠券</a>
+                            <a href="/list.html">优惠券</a>
                         </li>
                         <li>
-                            <a href="/static/search#">秒杀</a>
+                            <a href="/list.html">秒杀</a>
                         </li>
                         <li>
-                            <a href="/static/search#">闪购</a>
+                            <a href="/list.html">闪购</a>
                         </li>
                         <li>
-                            <a href="/static/search#">印尼站</a>
+                            <a href="/list.html">印尼站</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城金融科技</a>
+                            <a href="/list.html">谷粒商城金融科技</a>
                         </li>
                         <li>
-                            <a href="/static/search#">In货推荐</a>
+                            <a href="/list.html">In货推荐</a>
                         </li>
                         <li>
-                            <a href="/static/search#">陪伴计划</a>
+                            <a href="/list.html">陪伴计划</a>
                         </li>
                         <li>
-                            <a href="/static/search#">出海招商</a>
+                            <a href="/list.html">出海招商</a>
                         </li>
                     </ul>
                     <ul style="width: 20%;">
                         <p style="width:100%;">行业频道</p>
                         <li>
-                            <a href="/static/search#">手机</a>
+                            <a href="/list.html">手机</a>
                         </li>
                         <li>
-                            <a href="/static/search#">智能数码</a>
+                            <a href="/list.html">智能数码</a>
                         </li>
                         <li>
-                            <a href="/static/search#">玩3c</a>
+                            <a href="/list.html">玩3c</a>
                         </li>
                         <li>
-                            <a href="/static/search#">电脑办公</a>
+                            <a href="/list.html">电脑办公</a>
                         </li>
                         <li>
-                            <a href="/static/search#">家用电器</a>
+                            <a href="/list.html">家用电器</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城智能</a>
+                            <a href="/list.html">谷粒商城智能</a>
                         </li>
                         <li>
-                            <a href="/static/search#">服装城</a>
+                            <a href="/list.html">服装城</a>
                         </li>
                         <li>
-                            <a href="/static/search#">美妆馆</a>
+                            <a href="/list.html">美妆馆</a>
                         </li>
                         <li>
-                            <a href="/static/search#">家装城</a>
+                            <a href="/list.html">家装城</a>
                         </li>
                         <li>
-                            <a href="/static/search#">母婴</a>
+                            <a href="/list.html">母婴</a>
                         </li>
                         <li>
-                            <a href="/static/search#">食品</a>
+                            <a href="/list.html">食品</a>
                         </li>
                         <li>
-                            <a href="/static/search#">运动户外</a>
+                            <a href="/list.html">运动户外</a>
                         </li>
                         <li>
-                            <a href="/static/search#">农资频道</a>
+                            <a href="/list.html">农资频道</a>
                         </li>
                         <li>
-                            <a href="/static/search#">整车</a>
+                            <a href="/list.html">整车</a>
                         </li>
                         <li>
-                            <a href="/static/search#">图书</a>
+                            <a href="/list.html">图书</a>
                         </li>
                     </ul>
                     <ul style="width: 21%;">
                         <p style="width:100%;">生活服务</p>
                         <li>
-                            <a href="/static/search#">白条</a>
+                            <a href="/list.html">白条</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城金融App</a>
+                            <a href="/list.html">谷粒商城金融App</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城小金库</a>
+                            <a href="/list.html">谷粒商城小金库</a>
                         </li>
                         <li>
-                            <a href="/static/search#">理财</a>
+                            <a href="/list.html">理财</a>
                         </li>
                         <li>
-                            <a href="/static/search#">智能家电</a>
+                            <a href="/list.html">智能家电</a>
                         </li>
                         <li>
-                            <a href="/static/search#">话费</a>
+                            <a href="/list.html">话费</a>
                         </li>
                         <li>
-                            <a href="/static/search#">水电煤</a>
+                            <a href="/list.html">水电煤</a>
                         </li>
                         <li>
-                            <a href="/static/search#">彩票</a>
+                            <a href="/list.html">彩票</a>
                         </li>
                         <li>
-                            <a href="/static/search#">旅行</a>
+                            <a href="/list.html">旅行</a>
                         </li>
                         <li>
-                            <a href="/static/search#">机票酒店</a>
+                            <a href="/list.html">机票酒店</a>
                         </li>
                         <li>
-                            <a href="/static/search#">电影票</a>
+                            <a href="/list.html">电影票</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城到家</a>
+                            <a href="/list.html">谷粒商城到家</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城众测</a>
+                            <a href="/list.html">谷粒商城众测</a>
                         </li>
                         <li>
-                            <a href="/static/search#">游戏</a>
+                            <a href="/list.html">游戏</a>
                         </li>
                     </ul>
                     <ul style="width: 23%; border-right: 0;">
                         <p style="width:100%;">更多精选</p>
                         <li>
-                            <a href="/static/search#">合作招商</a>
+                            <a href="/list.html">合作招商</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城通信</a>
+                            <a href="/list.html">谷粒商城通信</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城E卡</a>
+                            <a href="/list.html">谷粒商城E卡</a>
                         </li>
                         <li>
-                            <a href="/static/search#">企业采购</a>
+                            <a href="/list.html">企业采购</a>
                         </li>
                         <li>
-                            <a href="/static/search#">服务市场</a>
+                            <a href="/list.html">服务市场</a>
                         </li>
                         <li>
-                            <a href="/static/search#">办公生活馆</a>
+                            <a href="/list.html">办公生活馆</a>
                         </li>
                         <li>
-                            <a href="/static/search#">乡村招募</a>
+                            <a href="/list.html">乡村招募</a>
                         </li>
                         <li>
-                            <a href="/static/search#">校园加盟</a>
+                            <a href="/list.html">校园加盟</a>
                         </li>
                         <li>
-                            <a href="/static/search#">京友帮</a>
+                            <a href="/list.html">京友帮</a>
                         </li>
                         <li>
-                            <a href="/static/search#">谷粒商城社区</a>
+                            <a href="/list.html">谷粒商城社区</a>
                         </li>
                         <li>
-                            <a href="/static/search#">智能社区</a>
+                            <a href="/list.html">智能社区</a>
                         </li>
                         <li>
-                            <a href="/static/search#">游戏社区</a>
+                            <a href="/list.html">游戏社区</a>
                         </li>
                         <li>
-                            <a href="/static/search#">知识产权维权</a>
+                            <a href="/list.html">知识产权维权</a>
                         </li>
                     </ul>
                 </div>
             </li>
             <span>|</span>
             <li class="header_sjjd">
-                <a href="/static/search#">手机谷粒商城</a>
+                <a href="/list.html">手机谷粒商城</a>
                 <div class="header_sjjd_div">
                     <img src="/static/search/img/01.png"/>
                 </div>

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.constant.AuthServerConstant;
 import com.atguigu.common.exception.BizCodeEnume;
 import com.atguigu.common.utils.R;
+import com.atguigu.common.vo.MemberRsepVo;
 import com.atguigu.gulimall.auth.feign.MemberFeignService;
 import com.atguigu.gulimall.auth.feign.ThirdPartyFeignService;
+import com.atguigu.gulimall.auth.vo.UserLoginVo;
 import com.atguigu.gulimall.auth.vo.UserRegisterVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +48,35 @@ public class LoginController {
     @GetMapping({"/login.html","/","/index","/index.html"})
     public String loginPage(HttpSession session){
         Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        //如果没登录，进入登录页
         if(attribute == null){
             return "login";
         }
+        //如果登录了，跳回首页
         return "redirect:http://gulimall.com";
+    }
+
+    //2.登录服务
+    @PostMapping("/login")
+    public String login(UserLoginVo userLoginVo, RedirectAttributes redirectAttributes, HttpSession session){
+        // 远程登录
+        R r = memberFeignService.login(userLoginVo);
+        if(r.getCode() == 0){
+            // 登录成功
+            MemberRsepVo rsepVo = r.getData("data", new TypeReference<MemberRsepVo>() {});
+            // redis 保存 session
+            session.setAttribute(AuthServerConstant.LOGIN_USER, rsepVo);
+
+            log.info("\n欢迎 [" + rsepVo.getUsername() + "] 登录");
+            return "redirect:http://gulimall.com";
+        }
+        else {
+            HashMap<String, String> error = new HashMap<>();
+            // 获取错误信息
+            error.put("msg", r.getData("msg",new TypeReference<String>(){}));
+            redirectAttributes.addFlashAttribute("errors", error);
+            return "redirect:http://auth.gulimall.com/login.html";
+        }
     }
 
     //2.注册方法 register

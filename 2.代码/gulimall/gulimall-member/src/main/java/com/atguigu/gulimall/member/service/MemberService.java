@@ -2,6 +2,8 @@ package com.atguigu.gulimall.member.service;
 
 import com.atguigu.gulimall.member.exception.PhoneExistException;
 import com.atguigu.gulimall.member.exception.UserNameExistException;
+import com.atguigu.gulimall.member.vo.MemberLoginVo;
+import com.atguigu.gulimall.member.vo.SocialUser;
 import com.atguigu.gulimall.member.vo.UserRegisterVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
@@ -26,5 +28,11 @@ public interface MemberService extends IService<MemberEntity> {
     //检查手机号 or 邮箱是否唯一
     void checkPhone(String phone) throws PhoneExistException;
     void checkUserName(String username) throws UserNameExistException;
+
+    //LoginController：远程调用登录服务
+    MemberEntity login(MemberLoginVo vo);
+
+    //社交账户Auth2登录
+    MemberEntity login(SocialUser socialUser);
 }
 
