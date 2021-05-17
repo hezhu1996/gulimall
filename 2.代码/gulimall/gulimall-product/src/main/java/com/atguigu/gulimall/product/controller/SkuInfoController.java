@@ -29,6 +29,19 @@ public class SkuInfoController {
     private SkuInfoService skuInfoService;
 
 
+
+    /**
+     * 查找当前商品价格
+     */
+    @GetMapping("/{skuId}/price")
+    public R getPrice(@PathVariable("skuId") Long skuId){
+
+        SkuInfoEntity byId = skuInfoService.getById(skuId);
+        // setData("data", data)
+        return R.ok().setData(byId.getPrice().toString());
+    }
+
+
     /**
      * 列表
      */

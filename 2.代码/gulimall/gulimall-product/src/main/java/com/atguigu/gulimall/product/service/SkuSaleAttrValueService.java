@@ -21,5 +21,10 @@ public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity
 
     //3 获取spu销售属性组合
     List<ItemSaleAttrVo> getSaleAttrsBuSpuId(Long spuId);
+
+    /**
+     * 得到销售属性的值，并组成字符串
+     */
+    List<String> getSkuSaleAttrValuesAsStringList(Long skuId);
 }
 
