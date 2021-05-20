@@ -30,12 +30,12 @@ public class OrderController {
     /**
      * 查询当前登录的用户的所有订单信息
      */
-    // @PostMapping("/listWithItem")
-    // public R listWithItem(@RequestBody Map<String, Object> params){
-    //     PageUtils page = orderService.queryPageWithItem(params);
-    //
-    //     return R.ok().put("page", page);
-    // }
+    @PostMapping("/listWithItem")
+    public R listWithItem(@RequestBody Map<String, Object> params){
+        PageUtils page = orderService.queryPageWithItem(params);
+
+        return R.ok().put("page", page);
+    }
 
 
     /**

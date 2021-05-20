@@ -1309,6 +1309,7 @@
         location.href = "http://cart.gulimall.com/addToCart?skuId=" + skuId + "&num=" + num;
         return false;
     })
+    //发送秒杀请求
     $("#secKillA").click(function () {
         var isLogin = [[${session.loginUser != null}]]
         if(isLogin){

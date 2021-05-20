@@ -19,7 +19,7 @@ public class ItemController {
 
     //1.展示当前sku的详情
     @GetMapping("/{skuId}.html")
-    public String skuItem(@PathVariable("skuId") String skuId, Model model) throws ExecutionException, InterruptedException {
+    public String skuItem(@PathVariable("skuId") Long skuId, Model model) throws ExecutionException, InterruptedException {
         //1.1 查询sku详细内容
         SkuItemVo skuItemVo = skuInfoService.item(skuId);
 

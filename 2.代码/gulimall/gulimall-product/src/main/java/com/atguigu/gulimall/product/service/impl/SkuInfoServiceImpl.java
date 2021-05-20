@@ -5,6 +5,7 @@ import com.atguigu.common.to.es.SkuEsModel;
 import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.entity.SkuImagesEntity;
 import com.atguigu.gulimall.product.entity.SpuInfoDescEntity;
+import com.atguigu.gulimall.product.feign.SeckillFeignService;
 import com.atguigu.gulimall.product.service.*;
 import com.atguigu.gulimall.product.vo.ItemSaleAttrVo;
 import com.atguigu.gulimall.product.vo.SeckillInfoVo;
@@ -55,8 +56,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
 
-    // @Autowired
-    // private SeckillFeignService seckillFeignService;
+    @Autowired
+    private SeckillFeignService seckillFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -154,7 +155,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
     //ItemController - 1.查询sku详细内容
     @Override
-    public SkuItemVo item(String skuId) throws ExecutionException, InterruptedException {
+    public SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException {
         //查询所有信息，给skuItemVo封装数据
         SkuItemVo skuItemVo = new SkuItemVo();
 
@@ -193,17 +194,17 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
         // 6.查询当前sku是否参与秒杀优惠
         //TODO:查询当前sku是否参与秒杀优惠
-        /*CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
+        CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
             R skuSeckillInfo = seckillFeignService.getSkuSeckillInfo(skuId);
             if (skuSeckillInfo.getCode() == 0) {
                 SeckillInfoVo seckillInfoVo = skuSeckillInfo.getData(new TypeReference<SeckillInfoVo>() {});
                 skuItemVo.setSeckillInfoVo(seckillInfoVo);
             }
-        }, executor);*/
+        }, executor);
 
         // 等待所有任务都完成再返回
-        // CompletableFuture.allOf(ImgageFuture,saleAttrFuture,descFuture,baseAttrFuture,secKillFuture).get();
-        CompletableFuture.allOf(ImgageFuture,saleAttrFuture,descFuture,baseAttrFuture).get();
+        CompletableFuture.allOf(ImgageFuture,saleAttrFuture,descFuture,baseAttrFuture,secKillFuture).get();
+        // CompletableFuture.allOf(ImgageFuture,saleAttrFuture,descFuture,baseAttrFuture).get();
         return skuItemVo;
     }
 }

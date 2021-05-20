@@ -1,8 +1,7 @@
 package com.atguigu.gulimall.order.service;
 
-import com.atguigu.gulimall.order.vo.OrderConfirmVo;
-import com.atguigu.gulimall.order.vo.OrderSubmitVo;
-import com.atguigu.gulimall.order.vo.SubmitOrderResponseVo;
+import com.atguigu.common.to.mq.SecKillOrderTo;
+import com.atguigu.gulimall.order.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.gulimall.order.entity.OrderEntity;
@@ -38,5 +37,21 @@ public interface OrderService extends IService<OrderEntity> {
 
     // 关闭订单
     void closeOrder(OrderEntity entity);
+
+    // 获取当前订单的支付信息
+    PayVo getOrderPay(String orderSn);
+
+    /**
+     * 查询当前登录的用户的所有订单信息
+     */
+    PageUtils queryPageWithItem(Map<String, Object> params);
+
+    /**
+     * 处理支付宝返回数据
+     */
+    String handlePayResult(PayAsyncVo vo);
+
+    // 创建秒杀单的信息
+    void createSecKillOrder(SecKillOrderTo secKillOrderTo);
 }
 

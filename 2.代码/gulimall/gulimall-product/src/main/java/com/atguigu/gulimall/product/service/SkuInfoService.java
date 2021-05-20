@@ -31,7 +31,7 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     List<SkuInfoEntity> getSkusBySpuId(Long spuId);
 
     //ItemController - 查询sku详细内容
-    SkuItemVo item(String skuId) throws ExecutionException, InterruptedException;
+    SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException;
 
 }
 

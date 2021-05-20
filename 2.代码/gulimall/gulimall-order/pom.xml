@@ -18,6 +18,13 @@
 		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
 	</properties>
 	<dependencies>
+		<!--alipay 支付宝-->
+		<dependency>
+			<groupId>com.alipay.sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>4.9.28.ALL</version>
+		</dependency>
+
 		<!--RabbitMQ-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -30,7 +30,7 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEnt
 
     //根据skuId，查询图片信息
     @Override
-    public List<SkuImagesEntity> getImagesBySkuId(String skuId) {
+    public List<SkuImagesEntity> getImagesBySkuId(Long skuId) {
         List<SkuImagesEntity> skuImagesEntities = baseMapper.selectList(new QueryWrapper<SkuImagesEntity>().eq("sku_id", skuId));
 
         return skuImagesEntities;

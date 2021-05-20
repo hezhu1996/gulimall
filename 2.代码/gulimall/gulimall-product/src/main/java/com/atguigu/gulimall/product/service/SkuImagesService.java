@@ -18,6 +18,6 @@ public interface SkuImagesService extends IService<SkuImagesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    List<SkuImagesEntity> getImagesBySkuId(String skuId);
+    List<SkuImagesEntity> getImagesBySkuId(Long skuId);
 }
 

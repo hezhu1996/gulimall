@@ -4,10 +4,12 @@ import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.enume.OrderStatusEnum;
 import com.atguigu.common.exception.NotStockException;
 import com.atguigu.common.to.mq.OrderTo;
+import com.atguigu.common.to.mq.SecKillOrderTo;
 import com.atguigu.common.utils.R;
 import com.atguigu.common.vo.MemberRsepVo;
 import com.atguigu.gulimall.order.constant.OrderConstant;
 import com.atguigu.gulimall.order.entity.OrderItemEntity;
+import com.atguigu.gulimall.order.entity.PaymentInfoEntity;
 import com.atguigu.gulimall.order.feign.CartFeignService;
 import com.atguigu.gulimall.order.feign.MemberFeignService;
 import com.atguigu.gulimall.order.feign.ProductFeignService;
@@ -463,7 +465,131 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
     }
 
+
+    /**
+     * 获取当前订单的支付信息
+     */
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        PayVo payVo = new PayVo();
+        OrderEntity order = this.getOrderByOrderSn(orderSn);
+        // 设置支付金额，保留2位小数位向上补齐
+        payVo.setTotal_amount(order.getTotalAmount().add(order.getFreightAmount()==null?
+                new BigDecimal("0"):order.getFreightAmount()).setScale(2,BigDecimal.ROUND_UP).toString());
+        //设置订单号
+        payVo.setOut_trade_no(order.getOrderSn());
+        //在数据库中，查出当前订单所有数据（包括商品名称等，可以设置进 payVo）
+        List<OrderItemEntity> entities = orderItemService.list(
+                new QueryWrapper<OrderItemEntity>().eq("order_sn", order.getOrderSn()));
+        //设置标题
+        payVo.setSubject("gulimall");
+        //设置主体
+        payVo.setBody("gulimall");
+        if(null != entities.get(0).getSkuName() && entities.get(0).getSkuName().length() > 1){
+			// payVo.setSubject(entities.get(0).getSkuName());
+			// payVo.setBody(entities.get(0).getSkuName());
+            payVo.setSubject("gulimall");
+            payVo.setBody("gulimall");
+        }
+        return payVo;
+    }
+
+    /**
+     * 查询当前登录的用户的所有订单信息
+     */
+    @Override
+    public PageUtils queryPageWithItem(Map<String, Object> params) {
+        MemberRsepVo rsepVo = LoginUserInterceptor.threadLocal.get();
+        IPage<OrderEntity> page = this.page(
+                new Query<OrderEntity>().getPage(params),
+                // 查询这个用户的最新订单 [降序排序]
+                new QueryWrapper<OrderEntity>().eq("member_id",rsepVo.getId()).orderByDesc("id")
+        );
+        // 查询并设置：这个订单关联的所有订单项（商品详情）
+        List<OrderEntity> order_sn = page.getRecords().stream().map(order -> {
+
+            List<OrderItemEntity> orderSn = orderItemService.list(new QueryWrapper<OrderItemEntity>().
+                    eq("order_sn", order.getOrderSn()));
+            order.setItemEntities(orderSn);
+
+            return order;
+        }).collect(Collectors.toList());
+        page.setRecords(order_sn);
+        return new PageUtils(page);
+    }
+
+    /**
+     * 处理支付宝返回数据
+     */
+    @Override
+    public String handlePayResult(PayAsyncVo vo) {
+        // 1.保存交易流水
+        PaymentInfoEntity infoEntity = new PaymentInfoEntity();
+        infoEntity.setAlipayTradeNo(vo.getTrade_no());
+        infoEntity.setOrderSn(vo.getOut_trade_no());
+        // TRADE_SUCCESS
+        infoEntity.setPaymentStatus(vo.getTrade_status());
+        infoEntity.setCallbackTime(vo.getNotify_time());
+        infoEntity.setSubject(vo.getSubject());
+        infoEntity.setTotalAmount(new BigDecimal(vo.getTotal_amount()));
+        infoEntity.setCreateTime(vo.getGmt_create());
+        // 数据库保存流水信息
+        paymentInfoService.save(infoEntity);
+
+        // 2.修改订单状态信息
+        if(vo.getTrade_status().equals("TRADE_SUCCESS") || vo.getTrade_status().equals("TRADE_FINISHED")){
+            // 修改数据库为：支付成功
+            String orderSn = vo.getOut_trade_no();
+            this.baseMapper.updateOrderStatus(orderSn, OrderStatusEnum.PAYED.getCode());
+        }
+        return "success";
+    }
+
+    // 创建秒杀单的信息
+    @Override
+    public void createSecKillOrder(SecKillOrderTo secKillOrderTo) {
+        log.info("\n创建秒杀订单");
+        OrderEntity entity = new OrderEntity();
+        entity.setOrderSn(secKillOrderTo.getOrderSn());
+        entity.setMemberId(secKillOrderTo.getMemberId());
+        entity.setCreateTime(new Date());
+        entity.setPayAmount(secKillOrderTo.getSeckillPrice());
+        entity.setTotalAmount(secKillOrderTo.getSeckillPrice());
+        entity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
+        entity.setPayType(1);
+        // TODO 还有挺多的没设置
+        BigDecimal price = secKillOrderTo.getSeckillPrice().multiply(new BigDecimal("" + secKillOrderTo.getNum()));
+        entity.setPayAmount(price);
+
+        this.save(entity);
+
+        // 保存订单项信息
+        OrderItemEntity itemEntity = new OrderItemEntity();
+        itemEntity.setOrderSn(secKillOrderTo.getOrderSn());
+        itemEntity.setRealAmount(price);
+        itemEntity.setOrderId(entity.getId());
+        itemEntity.setSkuQuantity(secKillOrderTo.getNum());
+        R info = productFeignService.getSkuInfoBySkuId(secKillOrderTo.getSkuId());
+        SpuInfoVo spuInfo = info.getData(new TypeReference<SpuInfoVo>() {});
+        itemEntity.setSpuId(spuInfo.getId());
+        itemEntity.setSpuBrand(spuInfo.getBrandId().toString());
+        itemEntity.setSpuName(spuInfo.getSpuName());
+        itemEntity.setCategoryId(spuInfo.getCatalogId());
+        itemEntity.setGiftGrowth(secKillOrderTo.getSeckillPrice().multiply(new BigDecimal(secKillOrderTo.getNum())).intValue());
+        itemEntity.setGiftIntegration(secKillOrderTo.getSeckillPrice().multiply(new BigDecimal(secKillOrderTo.getNum())).intValue());
+        itemEntity.setPromotionAmount(new BigDecimal("0.0"));
+        itemEntity.setCouponAmount(new BigDecimal("0.0"));
+        itemEntity.setIntegrationAmount(new BigDecimal("0.0"));
+        orderItemService.save(itemEntity);
+    }
+
 }
+
+
+
+
+
+
 
 
 
