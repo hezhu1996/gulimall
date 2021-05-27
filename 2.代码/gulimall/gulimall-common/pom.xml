@@ -40,6 +40,11 @@
     </build>
 
     <dependencies>
+        <!--sentinel-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
         <!-- mybatis-plus  -->
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -1,5 +1,8 @@
 package com.atguigu.gulimall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.to.mq.SecKillOrderTo;
@@ -139,7 +142,7 @@ public class SeckillServiceImpl implements SeckillService {
         // 1.确定当前时间属于那个秒杀场次
         long time = new Date().getTime();
         // 定义一段受保护的资源
-        // try (Entry entry = SphU.entry("seckillSkus")){
+        try (Entry entry = SphU.entry("seckillSkus")){
             Set<String> keys = stringRedisTemplate.keys(SESSION_CACHE_PREFIX + "*");
             for (String key : keys) {
                 // seckill:sessions:1593993600000_1593995400000
@@ -162,9 +165,9 @@ public class SeckillServiceImpl implements SeckillService {
                     break;
                 }
             }
-        // }catch (BlockException e){
-        //     log.warn("资源被限流：" + e.getMessage());
-        // }
+        }catch (BlockException e){
+            log.warn("资源被限流：" + e.getMessage());
+        }
         return null;
     }
 
