@@ -1,0 +1,92 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # product
+        - id: product_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # coupon
+        - id: product_coupon
+          uri: lb://gulimall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # member
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment} #截取串：api前缀去掉，剩下的保留
+        # third-party
+        - id: third_party_route
+          uri: lb://gulimall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
+        # ware_route
+        - id: ware_route
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        # renren-fast
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+        # gulimall
+        - id: gulimall_host_route
+          uri: lb://gulimall-product
+          predicates:
+            - Host=gulimall.com, item.gulimall.com
+
+        # gulimall-search
+        - id: gulimall_search_route
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
+
+        # gulimall-auth
+        - id: gulimall_auth_route
+          uri: lb://gulimall-auth-server
+          predicates:
+            - Host=auth.gulimall.com
+
+        # gulimall-cart
+        - id: gulimall_cart
+          uri: lb://gulimall-cart
+          predicates:
+            - Host=cart.gulimall.com
+
+        # gulimall-order
+        - id: gulimall_order
+          uri: lb://gulimall-order
+          predicates:
+            - Host=order.gulimall.com
+
+        # gulimall-order
+        - id: gulimall_member
+          uri: lb://gulimall-member
+          predicates:
+            - Host=member.gulimall.com
+        # gulimall-seckill
+        - id: gulimall_seckill
+          uri: lb://gulimall-seckill
+          predicates:
+            - Host=seckill.gulimall.com
+
+
+##  前端项目，默认都带api

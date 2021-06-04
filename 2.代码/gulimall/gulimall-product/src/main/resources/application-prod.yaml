@@ -1,0 +1,49 @@
+ipAddr: 192.168.56.10
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://gulimall-mysql-master.gulimall:3306/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-service.gulimall:8848
+    alicloud:
+      access-key: LTAI5tQZSDpkBsoc4DPKaVST
+      secret-key: NEdx4x6hTkTbKVEmuukWiocueoseur
+      oss:
+        endpoint: oss-us-east-1.aliyuncs.com
+  application:
+    name: gulimall-product
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.56.10
+    port: 6379
+  #缓存
+  cache:
+    redis:
+      time-to-live: 3600000
+      #是否缓存空值
+      cache-null-values: true
+      #redis前缀
+      use-key-prefix: true
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+server:
+  port: 10000
+logging:
+  level:
+    com.atguigu.gulimall: debug
